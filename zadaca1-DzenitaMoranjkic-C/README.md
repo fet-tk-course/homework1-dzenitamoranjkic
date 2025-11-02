@@ -28,8 +28,45 @@ Data class koji predstavlja developera sa poljima:
   - `ratingsByCategory` - racuna prosjecnu ocjenu aplikacija po kategoriji
   - `searchByName` - pronalazi aplikaciju po imenu i ispisuje rezultat
   - `searchByNameReturnApp` - pronalazi aplikaciju po imenu i vraca tu aplikaciju
+  - `sortByDownloads` / `sortByDownloadsMyImplementation` - sortira podatke po broju preuzimanja u opadajucem redoslijedu
   - `findDeveloperWithMaxDownloads` - pronalazi developera cije aplikacije imaju najvise ukupnih preuzimanja
   - `findAverageRatingOfDeveloperApp` - racuna prosjecnu ocjenu svih aplikacija odredjenog developera
+
+  **Dodatni opis za funkciju sortByDownloadsMyImplementation()**
+  - implementacija koristi `selection sort` algoritam za sortiranje aplikacija po broju preuzimanja u opadajucem redoslijedu.
+  - algoritam iterira kroz listu, pronalazi najveci element u preostalom dijelu liste i zamijeni ga sa elementom na trenutnoj poziciji.
+
+   
+```kotlin
+  fun sortByDownloadsMyImplementation(appList: List<App>):List<App>{
+      val sortedList = appList.toMutableList()
+      val n = sortedList.size
+      for(i in 0 until n-1) {
+          var maxPos = i
+          for (j in i + 1 until n) {
+              if (sortedList[j].downloads > sortedList[maxPos].downloads) {
+                  maxPos = j
+              }
+          }
+          //Swap 
+          val temp = sortedList[i]
+          sortedList[i] = sortedList[maxPos]
+          sortedList[maxPos] = temp
+      }
+      return sortedList
+  }
+
+```
+
+  **Objasnjenje koraka**
+  1. Vanjska petlja iterira kroz listu od prvog do predzadnjeg elemenata
+  2. Unutrasnja petlja trazi element sa najvecim brojem preuzimanja u ostatku liste
+  3. Kada se pronadje najveci element, zamijeni se sa elementom na trenutnoj poziciji
+  4. Rezultat je lista sortirana po broju preuzimanja u opadajucem redoslijedu
+
+  Referenca za selection sort:
+  - <https://www.geeksforgeeks.org/dsa/selection-sort-algorithm-2/>
+
 
 ## Razlozi za odabir nekih postojecih funkcija
 
