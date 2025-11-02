@@ -8,15 +8,31 @@ data class App (
         require(downloads > 0){
             "Vrijednost za broj preuzimanja mora biti veca od nula!"
         }
-        require(rating>=0){
-            "Vrijednost za prosjecnu ocjenu mora biti nula ili pozitivan broj"
+        require(rating in 0.0..5.0){
+            "Vrijednost za prosjecnu ocjenu mora biti izmedju 0 i 5"
         }
         require(size > 0){
             "Vrijednost za velicinu aplikacije mora biti veca od nula!"
         }
     }
     override fun toString(): String {
-        return "\nApp: $appName | Category: $category  | Downloads: $downloads | Rating: $rating | Size: $size"
+        var formatedString = ""
+        if (downloads > 1000000) {
+            val value = (downloads / 1000000.0)
+            if (value % 1.0 == 0.0)
+                formatedString = "${value.toInt()}M+"
+            else
+                formatedString = String.format("%.1fM+", value)
+        }
+        else if (downloads > 1000) {
+            val value = (downloads / 1000.0)
+            if (value % 1.0 == 0.0)
+                formatedString = "${value.toInt()}K+"
+            else
+                formatedString = String.format("%.1fK+", value)
+        }
+        else {formatedString = downloads.toString()}
+        return "\nApp: $appName | Category: $category  | Downloads: $formatedString | Rating: $rating | Size: ${size}MB"
     }
 }
 
@@ -85,6 +101,29 @@ fun searchByName(appList : List<App>, name: String){
         println(element)
     else
         println("Aplikacija $name nije pronadjena!")
+}
+
+// I used selection sort
+fun sortByDownloadsMyImplementation(appList: List<App>):List<App>{
+    val sortedList = appList.toMutableList()
+    val n = sortedList.size
+    for(i in 0 until n-1) {
+        var maxPos = i
+        for (j in i + 1 until n) {
+            if (sortedList[j].downloads > sortedList[maxPos].downloads) {
+                maxPos = j
+            }
+        }
+
+        val temp = sortedList[i]
+        sortedList[i] = sortedList[maxPos]
+        sortedList[maxPos] = temp
+    }
+    return sortedList
+}
+
+fun sortByDownloads(appList : List<App>): List<App>{
+    return appList.sortedByDescending { it.downloads }
 }
 
 //KOD ZA DODATNI ZADATAK
@@ -233,16 +272,29 @@ fun main() {
 
     // ----------------------------------------------------
 
-    println("\n========== TEST 6: Developer logicke provjere ==========")
+    println("\n========== TEST 6: Sortiranje liste ==========")
 
-    println("\n--- 6.1 Provjera developera sa najvise preuzimanja ---")
+    val sortedList = sortByDownloadsMyImplementation(listaApps)
+  //  println("Sortirana lista po broju preuzimanja u opadajucem redoslijedu:\n$sortedList")
+    println("Sortirana lista po broju preuzimanja u opadajucem redoslijedu:")
+    for(app in sortedList) {
+        println(app)
+    }
+    assert(sortedList == sortByDownloads(listaApps)) {
+        "Funkcija za sortiranje liste po broju preuzimanja ne radi ispravno!"
+    }
+    // ----------------------------------------------------
+
+    println("\n========== TEST 7: Developer logicke provjere ==========")
+
+    println("\n--- 7.1 Provjera developera sa najvise preuzimanja ---")
     val foundDev = findDeveloperWithMaxDownloads(developerList)
     println("Developer sa najvise preuzimanja:\n$foundDev")
     assert(foundDev.name == developer2.name) {
         "Funkcija za pronalazak developera sa max preuzimanjima ne radi ispravno!"
     }
 
-    println("\n--- 6.2 Provjera prosjecnog ratinga developera ---")
+    println("\n--- 7.2 Provjera prosjecnog ratinga developera ---")
     val foundAvDev = findAverageRatingOfDeveloperApp(developer2)
     val expectedAvgRating = developer2.listOfDevelopedApps.map { it.rating }.average()
     println("Izracunati prosjek: $foundAvDev | Ocekivani prosjek: $expectedAvgRating")
