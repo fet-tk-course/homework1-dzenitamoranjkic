@@ -39,6 +39,16 @@ Data class koji predstavlja developera sa poljima:
 - **`firstOrNull`** - vraca mi prvi element u listi za kojeg je uslov tacan, a ako ne postoji vraca *null* sto je efikasno
 - **`sumOf`** - vrati sumu vrijednosti elemenata iz liste na osnovu proslijedjene funkcije koja odredjuje koji clan se sabira
 
+## Koristenje funkcionalnosti u Android aplikaciji
+1. **`filterByRating` / `filterByRatingMyImplementation`**
+  - Moze posluziti za prikazivanje popularnih aplikacija prema ocjeni
+2. **`groupByCategory` / `groupByCategoryMyImplementation`**
+  - zajedno sa slicnim funkcijama za grupisanje, mogu se iskoristit za pravljenje   odredjenih sekcija u aplikaciji ili kategorizovanog prikaza
+3. **`ratingsByCategory`**
+  - moze se korisiti za kreiranje rang lista unutar pojedinacnih kategorija
+4. **`searchByName` / `searchByNameReturnApp`**
+  - omogucava pretragu aplikacija po imenu, sto poboljsava korisnicko iskustvo 
+
 ## Koristenje AI alata 
 
 U ovom projektu je koristen **ChatGPT** za:
