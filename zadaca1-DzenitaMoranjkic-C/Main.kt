@@ -16,7 +16,7 @@ data class App (
         }
     }
     override fun toString(): String {
-        return "App: $appName | Category: $category  | Downloads: $downloads | Rating: $rating | Size: $size "
+        return "\nApp: $appName | Category: $category  | Downloads: $downloads | Rating: $rating | Size: $size"
     }
 }
 
@@ -162,10 +162,20 @@ fun main() {
     // ====================================================
 
     println("\n========== TEST 1: Filtriranje aplikacija ==========")
-    val ratingApps = 3.5
-    val filteredApps = filterByRating(listaApps, ratingApps)
-    println("Aplikacije sa ocjenom > $ratingApps:\n$filteredApps")
-    assert(filteredApps.all { it.rating > ratingApps }) { "Filtriranje ne radi ispravno!" }
+
+    println("\n--- 1.1 filtiranje aplikacija pomocu funkcije filterByRating---")
+    val ratingApps1 = 3.5
+    val filteredApps1 = filterByRating(listaApps, ratingApps1)
+    println("Aplikacije sa ocjenom > $ratingApps1:\n$filteredApps1")
+    assert(filteredApps1.all { it.rating > ratingApps1 }) { "Filtriranje ne radi ispravno!" }
+
+    // ----------------------------------------------------
+
+    println("\n--- 1.2 filtiranje aplikacija pomocu funkcije filterByRatingMyImplementation---")
+    val ratingApps2 = 3.5
+    val filteredApps2 = filterByRatingMyImplementation(listaApps, ratingApps2)
+    println("Aplikacije sa ocjenom > $ratingApps2:\n$filteredApps2")
+    assert(filteredApps2.all { it.rating > ratingApps2 }) { "Filtriranje ne radi ispravno!" }
 
     // ----------------------------------------------------
 
