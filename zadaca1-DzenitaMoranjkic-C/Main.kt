@@ -68,6 +68,17 @@ fun ratingsByCategory(appList : List<App>) : Map<String, Double>{
     return map
 }
 
+fun sizeByCategory(appList : List<App>) : Map<String, Double>{
+    val countGroups = groupByCategory(appList)
+    val map : MutableMap<String, Double> =
+        appList.groupingBy { it.category }.fold(0.0){ acc, el -> acc + el.size}.toMutableMap()
+    for ((k, v) in countGroups){
+        val sum = map.getOrDefault(k, 0.0)
+        map[k] = sum / v
+    }
+    return map
+}
+
 fun searchByName(appList : List<App>, name: String){
     val element = appList.firstOrNull { it.appName == name }
     if(element != null)
@@ -210,16 +221,28 @@ fun main() {
 
     // ----------------------------------------------------
 
-    println("\n========== TEST 5: Developer logicke provjere ==========")
+    println("\n========== TEST 5: Racunanje prosjecne velicine po kategoriji ==========")
+    val sizeByCategory = sizeByCategory(listaApps)
+    println("Prosjecna velicina po kategorijama:\n$sizeByCategory")
 
-    println("\n--- 5.1 Provjera developera sa najvise preuzimanja ---")
+    val category2 = "Igrice"
+    val expectedAvgSize = listaApps.filter { it.category == category2 }.map { it.size }.average()
+    assert(sizeByCategory[category2] == expectedAvgSize) {
+        "Racunanje prosjecne velicine po kategoriji nije ispravno!"
+    }
+
+    // ----------------------------------------------------
+
+    println("\n========== TEST 6: Developer logicke provjere ==========")
+
+    println("\n--- 6.1 Provjera developera sa najvise preuzimanja ---")
     val foundDev = findDeveloperWithMaxDownloads(developerList)
     println("Developer sa najvise preuzimanja:\n$foundDev")
     assert(foundDev.name == developer2.name) {
         "Funkcija za pronalazak developera sa max preuzimanjima ne radi ispravno!"
     }
 
-    println("\n--- 5.2 Provjera prosjecnog ratinga developera ---")
+    println("\n--- 6.2 Provjera prosjecnog ratinga developera ---")
     val foundAvDev = findAverageRatingOfDeveloperApp(developer2)
     val expectedAvgRating = developer2.listOfDevelopedApps.map { it.rating }.average()
     println("Izracunati prosjek: $foundAvDev | Ocekivani prosjek: $expectedAvgRating")
