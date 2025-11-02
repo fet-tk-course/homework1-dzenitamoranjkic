@@ -42,6 +42,11 @@ data class Developer(
     var country : String,
     var listOfDevelopedApps : List<App>
 )
+{
+    override fun toString(): String {
+        return "\nDeveloper: $name $surname | Country: $country | Apps: $listOfDevelopedApps"
+    }
+}
 
 fun filterByRatingMyImplementation(appList : List<App>, rating : Double) : List<App> {
     val filteredApps : ArrayList<App> = ArrayList()
