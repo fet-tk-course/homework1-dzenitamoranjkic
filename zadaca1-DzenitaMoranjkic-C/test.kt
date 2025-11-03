@@ -84,6 +84,7 @@ fun ratingsByCategory(appList : List<App>) : Map<String, Double>{
     val countGroups = groupByCategory(appList)
     val map : MutableMap<String, Double> =
         appList.groupingBy { it.category }.fold(0.0){ acc, el -> acc + el.rating}.toMutableMap()
+
     for ((k, v) in countGroups){
         val sum = map.getOrDefault(k, 0.0)
         map[k] = sum / v
@@ -184,8 +185,14 @@ fun developerLeaderboard(k: Int, developerList: List<Developer>) : Map<String,Pa
     }
 
     return returnMapaNovi
-}
+} //strahota i grehota
 
+fun developerLeaderboard2(k: Int, developerList: List<Developer>) : Unit {
+    val listaNovi : List<Developer> = developerList.sortedByDescending { it -> it.listOfDevelopedApps.sumOf { it.rating } }.take(k).sortedByDescending { it -> it.listOfDevelopedApps.sumOf { it.downloads } }
+    for(dev in listaNovi){
+        println(dev.name + " -> " + "sum of downloads: " + dev.listOfDevelopedApps.sumOf { it.downloads } + ", sum of ratings: " + dev.listOfDevelopedApps.sumOf { it.rating })
+    }
+}
 
 fun main() {
 
@@ -196,15 +203,15 @@ fun main() {
         App("QuickChat", "Komunikacija", 3100000, 1.9, 100),
 
         App("FitTrack", "Zdravlje i fitnes", 1200000, 4.2, 85),
-        App("YogaDaily", "Zdravlje i fitnes", 900000, 4.6, 70),
+        App("YogaDaily", "Zdravlje i fitnes", 3100000, 4.6, 70),
         App("CalorieWatch", "Zdravlje i fitnes", 450000, 3.8, 65),
 
         App("GalaxyRun", "Igrice", 10000000, 3.6, 250),
         App("PixelQuest", "Igrice", 4000000, 2.5, 230),
         App("RoboBattle", "Igrice", 1500000, 2.9, 190),
 
-        App("BookNest", "Knjige", 500000, 4.9, 55),
-        App("StoryWorld", "Knjige", 350000, 5.0, 60)
+        App("BookNest", "Knjige", 5000000, 4.9, 55),
+        App("StoryWorld", "Knjige", 1200000, 5.0, 60)
     )
 
     // ---------- Kreiranje developera ----------
@@ -232,8 +239,7 @@ fun main() {
 
     val developerList = listOf(developer1, developer2, developer3)
 
-    val leaderboradList = developerLeaderboard(3, developerList)
-    println(leaderboradList)
+    developerLeaderboard2(3, developerList)
 
     // ====================================================
     //                     TESTOVI
